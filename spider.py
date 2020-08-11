@@ -10,23 +10,18 @@ class Spider:
     domain_name = ''
     queue_file = ''
     crawled_file = ''
-    target_url = ''
     queue = set()
     crawled = set()
 
-    def __init__(self, project_name, base_url, domain_name, target_url):
+    def __init__(self, project_name, base_url, domain_name):
         Spider.project_name = project_name
         Spider.base_url = base_url
         Spider.domain_name = domain_name
-        Spider.target_url = target_url
 
         Spider.queue_file = Spider.project_name + '/queue.txt'
         Spider.crawled_file = Spider.project_name + '/crawled.txt'
         self.boot()
         self.crawl_page('First spider', Spider.base_url)
-
-    def join(self):
-        self.join()
 
     @staticmethod
     def boot():
@@ -50,9 +45,12 @@ class Spider:
         html_string = ''
         try:
             response = urlopen(page_url)
+            # if response.getheader('Content-Type') == 'text/html':
             if 'text/html' in response.getheader('Content-Type'):
                 html_bytes = response.read()
+                # print(html_bytes)
                 html_string = html_bytes.decode("utf-8")
+                # print(html_string)
             finder = LinkFinder(Spider.base_url, page_url)
             finder.feed(html_string)
 
@@ -64,11 +62,6 @@ class Spider:
     @staticmethod
     def add_links_to_queue(links):
         for url in links:
-            if url in Spider.target_url:
-                print("URL " + Spider.target_url + " found")
-                exit()
-            if "cite" in url:
-                continue
             if url in Spider.queue:
                 continue
             if url in Spider.crawled:
