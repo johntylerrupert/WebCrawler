@@ -3,13 +3,19 @@ from queue import Queue
 from spider import Spider
 from domain import *
 from general import *
-
-PROJECT_NAME = 'entrepreneur'
+'''
+PROJECT_NAME = 'Wikipedia Game'
+HOMEPAGE = 'https://en.wikipedia.org/wiki/Eastern_Hemisphere'
+TARGET_URL = 'https://en.wikipedia.org/wiki/Alcohol_intoxication'
+'''
+PROJECT_NAME = 'Entrepreneur'
 HOMEPAGE = 'https://www.entrepreneur.com/'
+TARGET_URL = '0'
 
 DOMAIN_NAME = get_domain_name(HOMEPAGE)
 QUEUE_FILE = PROJECT_NAME + '/queue.txt'
 CRAWLED_FILE = PROJECT_NAME + '/crawled.txt'
+
 
 NUMBER_OF_THREADS = 8
 
@@ -17,7 +23,7 @@ queue = Queue()
 
 print('///////////////////// WebCrawler.py /////////////////////\n')
 
-Spider(PROJECT_NAME, HOMEPAGE, DOMAIN_NAME)
+Spider(PROJECT_NAME, HOMEPAGE, DOMAIN_NAME, TARGET_URL)
 
 
 # Create worker threads (will die when main exits)
@@ -26,7 +32,6 @@ def create_workers():
         t = threading.Thread(target=work)
         t.daemon = True
         t.start()
-
 
 # Do the next job in the queue
 def work():
