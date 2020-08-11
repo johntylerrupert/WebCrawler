@@ -1,5 +1,4 @@
 import os
-import io
 
 # Each website crawled is a separate project (folder)
 def create_project_dir(directory):
@@ -27,9 +26,13 @@ def write_file(path, data):
 
 # Add data onto an existing file
 def append_to_file(path, data):
-    with io.open(path, 'a', encoding="utf-8") as file:
-        file.write(data + '\n')
 
+    try:
+        with open(path, 'a') as file:
+            file.write(data + '\n')
+    except:
+        print("ERROR: Can not append data")
+        pass
 
 # Delete the contents of a file
 def delete_file_contents(path):
@@ -38,10 +41,10 @@ def delete_file_contents(path):
 
 # Read a file and convert each line to set items
 def file_to_set(file_name):
-    results = []
+    results = set()
     with open(file_name, 'r') as f:
         for line in f:
-            results.append(line.replace('\n', ''))
+            results.add(line.replace('\n', ''))
     return results
 
 
